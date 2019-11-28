@@ -6,6 +6,7 @@
 package uts_praktikum_pbd;
 
 import javax.swing.table.DefaultTableModel;
+import static uts_praktikum_pbd.Uts_Praktikum_PBD.user;
 
 /**
  *
@@ -13,16 +14,37 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Tabel_percobaan extends javax.swing.JFrame {
     private DefaultTableModel model;
+    private Koneksi_DB var_koneksi;
     /**
      * Creates new form Tabel_percobaan
      */
     public Tabel_percobaan() {
         initComponents();
         model = new DefaultTableModel();
+        var_koneksi = new Koneksi_DB();
+        
         Tabel1.setModel(model);
-        model.addColumn("Kode");
-        model.addColumn("Nama");
-        model.addColumn("Harga");
+        model.addColumn("Nama Produk");
+        model.addColumn("Harga Produk");
+        
+        
+        try {
+            var_koneksi.connection();
+            String sql = "select * from produk";
+            var_koneksi.rs = 
+            var_koneksi.st.executeQuery(sql);
+            while (var_koneksi.rs.next()){
+                Object[ ] objk = new Object[3];
+                objk[0]     =
+                var_koneksi.rs.getString ("nama_produk");
+                objk[1]     =
+                var_koneksi.rs.getString ("harga_produk");
+                
+                model.addRow(objk);
+            }
+        }catch (Exception e){
+            
+        }
     }
 
     /**
